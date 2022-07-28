@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PrixForfaitConfig{% endblock %}
+
+{% block body %}
+    <h1>PrixForfaitConfig</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ prix_forfait_config.id }}</td>
+            </tr>
+            <tr>
+                <th>TarifSemaine</th>
+                <td>{{ prix_forfait_config.tarifSemaine }}</td>
+            </tr>
+            <tr>
+                <th>TarifJour</th>
+                <td>{{ prix_forfait_config.tarifJour }}</td>
+            </tr>
+            <tr>
+                <th>Currency</th>
+                <td>{{ prix_forfait_config.currency }}</td>
+            </tr>
+            <tr>
+                <th>IsActif</th>
+                <td>{{ prix_forfait_config.isActif ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_prix_forfait_config_index') }}">back to list</a>
+
+    <a href="{{ path('app_prix_forfait_config_edit', {'id': prix_forfait_config.id}) }}">edit</a>
+
+    {{ include('prix_forfait_config/_delete_form.html.twig') }}
+{% endblock %}

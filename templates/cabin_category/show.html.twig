@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+{% block title %}Catégorie cabine{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+    <div class="d-flex justify-content-center">
+        <a href="{{ path('app_cabin_category_index') }}">Retourner à la liste</a>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h1 class="display-4">Catégorie cabine</h1>
+        </div>
+    </div>
+    
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="col">ID</th>
+                <td>{{ cabin_category.id }}</td>
+            </tr>
+
+            <tr>
+                <th scope="col">Nom</th>
+                <td>{{ cabin_category.cabinCategoryTexte }}</td>
+            </tr>
+            <tr>
+                <th scope="col">Code</th>
+                <td>{{ cabin_category.CabinCategoryCode }}</td>
+            </tr>
+
+            <tr>
+                <th scope="col">ID compagnie</th>
+                <td>{{ cabin_category.compagnieId }}</td>
+            </tr>
+            <tr>
+                <th scope="col">ID bateau(x)</th>
+                <td>{{ cabin_category.bateauId }}</td>
+            </tr>
+            <tr>
+                <th scope="col">Langue</th>
+                <td>{{ cabin_category.langue }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+    <div class="row justify-content-md-center">
+        <div class="row">
+            <div class="col">
+                <a href="{{ path('app_cabin_category_edit', {'id': cabin_category.id}) }}" class="btn btn-secondary ">Modifier</a>
+            </div>
+            <div class="col">
+                {{ include('cabin_category/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+    <hr>
+        <div class="d-flex justify-content-center">
+                <a href="{{ path('app_cabin_category_index') }}">Retourner à la liste</a>
+        </div>
+
+        <div class="d-flex align-content-center w-auto typesCabines">
+            {% for ct in cabin_category.CabinTypes  %} 
+            <div class = "col cabinType">
+               <div class = "cabinName">
+                    <h4>{{ ( ct.name | upper ) }}</h4>
+                </div>
+                <div>
+                    <h5 class="display-5">Mises en avant</h5>
+                </div>
+                <div>
+                    {% for e in ct.elements %}
+                        <li>{{ e.position ~ ' - ' ~ (e.element) }}</li>
+                    {% endfor %}
+                </div>
+                <div>
+                    <h4 class="display-5">Codes :</h4>
+                </div>
+                <div>
+                    {% for c in ct.codes %}
+                        <ul class="cabinTypeCode">
+                            <li>{{ (c.code) }}</li>
+                        </ul>
+                    {% endfor %}
+                </div>
+                
+                {% if  ct.TypesPrices|length > 0  %}
+                  <div class="btn-group">
+                    <div class="dropdown">
+                        <button class="btn btn-info btn-lg btn-block dropdown-toggle btn-typeTarif" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">Types tarifaires<span class="caret"></span></button>
+                        <div class="dropdown-menu pre-scrollable" aria-labelledby="dropdownMenuButton">
+                            {% for tp in ct.TypesPrices %}        
+                                <li class="dropdown-item">{{tp.fareTypeDesc}}</li>  
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %} 
+                </select>          
+            </div>
+            {% endfor %}
+        </div>
+
+{% endblock %}
+
+

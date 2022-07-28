@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ForfaitTypeTraductions{% endblock %}
+
+{% block body %}
+    <h1>Create new ForfaitTypeTraductions</h1>
+
+    {{ include('forfait_type_traductions/_form.html.twig') }}
+
+    <a href="{{ path('app_forfait_type_traductions_index') }}">back to list</a>
+{% endblock %}

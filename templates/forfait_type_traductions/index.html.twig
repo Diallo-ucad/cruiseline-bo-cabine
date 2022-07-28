@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ForfaitTypeTraductions index{% endblock %}
+
+{% block body %}
+    <h1>ForfaitTypeTraductions index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Lang</th>
+                <th>ForfaitTypeTitle</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for forfait_type_traduction in forfait_type_traductions %}
+            <tr>
+                <td>{{ forfait_type_traduction.id }}</td>
+                <td>{{ forfait_type_traduction.lang }}</td>
+                <td>{{ forfait_type_traduction.forfaitTypeTitle }}</td>
+                <td>
+                    <a href="{{ path('app_forfait_type_traductions_show', {'id': forfait_type_traduction.id}) }}">show</a>
+                    <a href="{{ path('app_forfait_type_traductions_edit', {'id': forfait_type_traduction.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_forfait_type_traductions_new') }}">Create new</a>
+{% endblock %}

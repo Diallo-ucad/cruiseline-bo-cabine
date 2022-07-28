@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle catégorie cabine{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <h1>Créer une nouvelle catégorie de cabine</h1>
+
+    {{ include('cabin_category/_form.html.twig') }}
+
+    <a href="{{ path('app_cabin_category_index') }}">retourner à la liste</a>
+    </div>
+{% endblock %}

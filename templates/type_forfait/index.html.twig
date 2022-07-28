@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+{% block title %} Gestion des forfaits {% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="d-flex justify-content-center" id="data-loading"></div>
+        <div class="d-flex justify-content-between p-3">
+            <div class="col">
+                <h5 class="text-justify">GESTION DES TYPES FORFAITS</h5>
+            </div>
+            <div class="col d-flex btn-actions">
+                <a href="#" class="btn btn-success btn-sm active" onclick="addTypeForfait()" id="btn-add-type-forfait" role="button" aria-pressed="true" aria-label="Left Align" data-toggle="tooltip" data-placement="right" title="Ajouter Un Type Forfait">
+                    <i class="bi bi-plus-square-fill"></i>
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-center">
+            {% for type_forfait in type_forfaits %}
+                <div class="col g-3">
+                        <div class="card  shadow-sm ">
+
+                                <div class="w-100 p-3">
+                                    <a href="{{ path('app_type_forfait_show', {'id': type_forfait.id}) }}" class="btn {{ type_forfait.actif ? 'btn-success' : 'btn-danger' }} btn-block " for="option3" role="button" ><strong>{{ type_forfait.titre }}</strong></a>
+                                </div>
+
+                                <div class="w-100 d-flex justify-content-center p-1">
+                                    <a href="#" id="addForfait" onclick="addForfait({{ type_forfait.id }})" class="btn btn-success btn-rounded addForfait" role="button" aria-pressed="true" aria-label="Left Align" data-toggle="tooltip" data-placement="right" title="Ajouter Un Forfait" >
+                                        <i class="bi bi-plus-square-fill"></i>
+                                    </a>
+                                </div>
+                                <div class="w-100 p-3" >
+
+                                    <ul class="list-group list-group-flush">
+                                        {% for forfait in type_forfait.forfaits.values %}
+                                            <li class="list-group-item g-2" style="border:solid #dfdfdf 0.2px;  border-left: solid 4px  {{ forfait.actif ? 'green' : 'red' }}">
+
+                                                <div class="row d-flex d-flex">
+                                                    <div class="col flex-wrap mr-auto p-2" id="forfaitTitle">
+                                                        <a  href="#" class="text-secondary text-start fw-bolder" id="selectedForfait" onclick="launchModal({forfaitId : '{{ forfait.getId }}', forfaitTitle : '{{ forfait.getForfaitTitre }}'})" data-toggle="tooltip"  title="Clicker pour gerer le contenu du forfait">
+                                                            {{ forfait.getForfaitTitre }}
+                                                        </a>
+                                                    </div>
+                                                    <div class="col  w-100 d-flex align-items-center  m-2 btn-actions">
+                                                        <div class="row d-flex ">
+                                                            <a href="{{ path('app_forfait_edit', {'id': forfait.id}) }}" class="btn btn-secondary btn-sm" aria-label="Left Align" data-toggle="tooltip"  title="Editer Le Forfait">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </a>
+                                                            {{ include('forfait/_delete_form.html.twig') }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="row d-flex justify-content-between p-2">
+                                    <div class="col m-2">
+                                        <a href="{{ path('app_type_forfait_edit', {'id': type_forfait.id}) }}" class="btn btn-secondary btn-block active" role="button" aria-pressed="true">Modifier</a>
+                                    </div>
+                                    <div class="col m-2">
+                                        {{ include('type_forfait/_delete_form.html.twig') }}
+                                    </div>
+                                </div>
+                        </div>
+                </div>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            <div class="forfaitContentsModal" id="forfaitContentsModal"></div>
+            <div class="addModal" id="addModal"></div>
+        </div>
+    </div>
+
+
+    <script>
+        loadingHtml = '<div class="spinner-grow text-primary" role="status" id="data-load-spiner"> ' +
+                      '<span class="sr-only">Loading...</span> </div>';
+        function setModalContent (forfaitId){
+             $.ajax({
+                data:
+                    {
+                        data : forfaitId
+                    },
+                url: '{{ path('app_service_form_showForfaitContents') }}',
+                async: true,
+                type: 'GET',
+                success: function (result) {
+                    $('#forfaitContents').html(result)
+
+                },
+            });
+        }
+
+        function createContentModal(forfait){
+            forfaitId = forfait.forfaitId
+            modalTitle = forfait.forfaitTitle
+            return new Promise(function (resolve, reject){
+                $.ajax({
+                    data:
+                        {
+                            data : forfaitId
+                        },
+                    url: '{{ path('app_service_form_launchForfaitContentsModal') }}',
+                    async: true,
+                    type: 'GET',
+                    success: function (result) {
+                        $('#forfaitContentsModal').html(result)
+                        setModalContent(forfaitId)
+                        resolve(result)
+                    },
+                    error: function (err){
+                        reject(err)
+                    }
+                });
+            })
+        }
+
+        function  launchModal(forfaitId){
+            $('#data-loading').html(loadingHtml)
+            $.when(createContentModal(forfaitId)).done(function(result){
+                $('#data-load-spiner').remove()
+                $('#forfaitContentModalLabel').html( modalTitle )
+                $('#forfaitContentModal').modal('toggle')
+            });
+        }
+
+
+        function getModal(task){
+             return new Promise(((resolve, reject) => {
+                 $.ajax({
+                     data: {
+                         task: task,
+                     },
+                     url: '{{ path('app_service_form_getNewForfaitModal') }}',
+                     async: true,
+                     type: 'GET',
+                     success: function (result) {
+                       resolve(result)
+                     },
+                     error: function (err){
+                         reject(err)
+                     }
+                 });
+             }))
+        }
+
+        function getForfaitForm(typeForfaitId){
+            return new Promise(((resolve, reject) => {
+                $.ajax({
+                    data:{
+                        data: typeForfaitId,
+                    },
+                    url: '{{ path('app_service_form_getForfaitForm') }}',
+                    async: true,
+                    type: 'GET',
+                    success: function (result) {
+                        resolve(result)
+                    },
+                    error: function (err){
+                        reject(err)
+                    }
+                });
+            }))
+        }
+
+        function getTypeForfaitForm(){
+            return new Promise(((resolve, reject) => {
+                $.ajax({
+                    url: '{{ path('app_service_form_getTypeForfaitForm') }}',
+                    async: true,
+                    type: 'GET',
+                    success: function (result) {
+                        resolve(result)
+                    },
+                    error: function (err){
+                        reject(err)
+                    }
+                });
+            }))
+        }
+
+        function addForfait(typeForfaitId){
+            $('#data-loading').html(loadingHtml)
+            $.when(getModal('forfait')).done(function(result){
+              $('#addModal').html(result)
+            });
+
+            $.when(getForfaitForm(typeForfaitId)).done(function(result){
+                $('#data-load-spiner').remove()
+                $('#newForfaitModalBody').html(result)
+                $('#defautl-btn-add-forfait').remove()
+                $('#newForfaitModal').modal('toggle')
+            });
+        }
+
+        function addTypeForfait(){
+            $.when(getModal('typeForfait')).done(function(result){
+                $('#addModal').html(result)
+            });
+
+            $.when(getTypeForfaitForm()).done(function(result){
+                $('#data-load-spiner').remove()
+                $('#newTypeForfaitModalBody').html(result)
+                $('#defautl-btn-add-type-forfait').remove()
+                $('#newTypeForfaitModal').modal('toggle')
+            });
+        }
+
+    </script>
+{% endblock %}

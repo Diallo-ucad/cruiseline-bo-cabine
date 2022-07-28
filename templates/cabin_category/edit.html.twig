@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer catégorie cabine{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <h1 class="display-4">Editer catégorie cabine</h1>
+
+    {{ include('cabin_category/_form.html.twig', {'button_label': 'Mise à jour'}) }}
+
+    <a href="{{ path('app_cabin_category_index') }}">retourner à la liste</a>
+
+    {{ include('cabin_category/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

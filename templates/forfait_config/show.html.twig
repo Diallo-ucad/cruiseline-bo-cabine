@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ForfaitConfig{% endblock %}
+
+{% block body %}
+    <h1>ForfaitConfig</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ forfait_config.id }}</td>
+            </tr>
+
+            <tr>
+                <th>Compagnie</th>
+                <td>{{ forfait_config.companyId }}</td>
+            </tr>
+
+            <tr>
+                <th>Bateau</th>
+                <td>{{ forfait_config.bateauId }}</td>
+            </tr>
+            <tr>
+                <th>Port</th>
+                <td>{{ forfait_config.portId }}</td>
+            </tr>
+            <tr>
+                <th>Cabin Category</th>
+                <td>{{ forfait_config.cabinCategory }}</td>
+            </tr>
+            <tr>
+                <th>Cabin type</th>
+                <td>{{ forfait_config.cabinType }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_forfait_config_index') }}">back to list</a>
+
+    
+{% endblock %}

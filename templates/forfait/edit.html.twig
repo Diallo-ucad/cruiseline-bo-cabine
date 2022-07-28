@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Forfait{% endblock %}
+
+{% block body %}
+    <h1>Edit Forfait</h1>
+
+    {{ include('forfait/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_forfait_index') }}">back to list</a>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ForfaitTraductions{% endblock %}
+
+{% block body %}
+    <h1>Edit ForfaitTraductions</h1>
+
+    {{ include('forfait_traductions/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_forfait_traductions_index') }}">back to list</a>
+
+    {{ include('forfait_traductions/_delete_form.html.twig') }}
+{% endblock %}

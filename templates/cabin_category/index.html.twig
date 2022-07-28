@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catégorie cabine - Listing{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <h1 class="display-4">Catégorie cabine - Listing</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Code</th>
+                <th scope="col">Nom</th>
+                <th scope="col">ID compagnie</th>
+                <th scope="col">ID bateau</th>
+                <th scope="col">Langue</th>
+                <th scope="col">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cabin_category in cabin_categories %}
+            <tr>
+                <th scope="row">{{ cabin_category.id }}</th>
+                <td>{{ cabin_category.CabinCategoryCode }}</td>
+                <td>{{ cabin_category.cabinCategoryTexte }}</td>
+                <td>{{ cabin_category.compagnieId }}</td>
+                <td>{{ cabin_category.bateauId }}</td>
+                <td>{{ cabin_category.langue }}</td>
+                <td>
+                    <a href="{{ path('app_cabin_category_show', {'id': cabin_category.id}) }}">voir</a>
+                    <a href="{{ path('app_cabin_category_edit', {'id': cabin_category.id}) }}">editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_cabin_category_new') }}">Nouveau</a>
+    </div>
+        {% endblock %}

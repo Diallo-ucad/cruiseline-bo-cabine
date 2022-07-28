@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="modal fade" id="prixForfaitConfigModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <strong id="modalTitle" class="modal-title" id="ConfigModalLabel"><p class="p-3 mb-2 w-100 bg-primary text-white" id="titleContent">Configuration non trouvé!</p></strong>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="infos" id="infos">
+                        <p>Aucune configuration disponible pour ces critères!!</p>
+                    </div>
+                    <div class="configForm" id="configForm">
+
+                    </div>
+                </div>
+                <div class="modal-footer" id="">
+                    <button type="button" class="btn btn-secondary" id="btn-close-modal" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" id="btnAjoutConfForfait">Ajouter cette configuration</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        let allForfaitConfigIds = []
+
+        function addOneConfig (forfaitConfigData){
+            // With Ajax we send request to add new forfait config
+            return new Promise(function (resolve, reject){
+                $.ajax({
+                    data:
+                        {
+                            data : forfaitConfigData
+                        },
+                    url: '{{ path('app_service_form_newForfaitConfig') }}',
+                    async: true,
+                    type: 'GET',
+                    success: function (result) {
+                        resolve(result)
+                    },
+                });
+            })
+
+        }
+
+        function addAllConfig(forfaitConfigData){
+            // With Ajax we send request to add new forfait config
+            return new Promise(function (resolve, reject){
+                $.ajax({
+                    data:
+                        {
+                            data : forfaitConfigData
+                        },
+                    url: '{{ path('app_service_form_addAllForfaitConfig') }}',
+                    async: true,
+                    type: 'GET',
+                    success: function (result) {
+                        resolve(result)
+                    },
+                });
+            })
+        }
+
+        $(document).on('click','#btnAjoutConfForfait',function () {
+            portId = $('#portId').val()
+            companyId = $('#companyId').val()
+            bateauId = $('#bateauId').val()
+            cabinCategory = $('#cabinCategory').val()
+            cabinType = $('#cabinTypes').val()
+            lang = $('#langCategory').val()
+            forfaitConfigData = {
+                'lang' : lang,
+                'portId': portId,
+                'companyId': companyId,
+                'boatId': bateauId,
+                'cabinCategoryId': cabinCategory,
+                'cabinTypeId': cabinType,
+                'isForfaitConfig': 0,
+            }
+
+            if(cabinCategory == 'All' & cabinType=='All'){
+                $.when(addAllConfig(forfaitConfigData)).done(function(result){
+
+                    let htmlData = result.html.content
+                    allForfaitConfigIds = result.forfaitsConfigsIds
+
+                    $('#titleContent').text('Affecter un forfait à toutes les categories')
+                    $('#infos').remove()
+                    $('#btnAjoutConfForfait').remove()
+                    $('#configForm').html(htmlData)
+                    $('#prix_forfait_config_forfaitConfig').remove()
+                    $('#forfaitConfigLabel').remove()
+                    $('#prix_forfait_config_typeForfait').append(
+                        '<option value="" selected>Selectionner un type forfait</option>'
+                    )
+                });
+
+            }else{
+                $.when(addOneConfig(forfaitConfigData)).done(function(result){
+                    $('#titleContent').text('Affecter un forfait')
+                    $('#infos').remove()
+                    $('#btnAjoutConfForfait').remove()
+                    $('#configForm').html(result)
+                    $('#prix_forfait_config_typeForfait').append(
+                        '<option value="" selected>Selectionner un type forfait</option>'
+                    )
+                });
+
+            }
+
+        });
+
+        $(document).on('change', '#prix_forfait_config_typeForfait', function (){
+            typeForfaitId = $('#prix_forfait_config_typeForfait').val()
+            companyId = $('#companyId').val()
+
+            data = {
+                'typeForfaitId' : typeForfaitId,
+                'companyId' : companyId,
+            }
+
+            $.ajax({
+                data:
+                    {
+                        id : id,
+                        data : data
+                    },
+                url: '{{ path('app_service_form_refreshForfaitList') }}',
+                async: true,
+                type: 'GET',
+                success: function (result) {
+                    $('#forfaits').html(result)
+                },
+            });
+        });
+
+
+        $('#ForfaitConfigModal').on('hidden.bs.modal', function () {
+            location.reload()
+        })
+    </script>
+{% endblock %}

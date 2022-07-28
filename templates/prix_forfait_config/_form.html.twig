@@ -1,0 +1,76 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div id="forfaits"></div>
+{{ form_end(form) }}
+<button type="button" class="btn btn-primary m-2" id="btn-save-prix-Forfait-config" disabled onclick="saveConfig()">Valider</button>
+
+
+<script>
+    function saveConfig (){
+        tarifSemaine = $('#prix_forfait_config_tarifSemaine').val()
+        tarifJour = $('#prix_forfait_config_tarifJour').val()
+        curency = $('#prix_forfait_config_currency').val()
+        isActif = $('#prix_forfait_config_actif').val()
+        forfaitConfig = $('#prix_forfait_config_forfaitConfig').val()
+        forfait = $('#prix_forfait_config_forfait').val()
+        cabinCategoryValue = $('#cabinCategory').val()
+        cabinTypeValue = $('#cabinTypes').val()
+        prixForfaitConfig = {
+            'tarifSemaine': tarifSemaine,
+            'tarifJour': tarifJour,
+            'curency': curency,
+            'isActif': isActif,
+            'forfaitConfig': forfaitConfig,
+            'forfait': forfait,
+        }
+
+        if(cabinCategoryValue.toUpperCase() === 'ALL' && cabinTypeValue.toUpperCase() === 'ALL'){
+            $.when(addAll(allForfaitConfigIds, prixForfaitConfig)).done(function(result){
+                console.log(result)
+            });
+        }else {
+            $.ajax({
+                data:
+                    {
+                        id : id,
+                        data : prixForfaitConfig
+                    },
+                url: '{{ path('app_service_form_newPrixForfaitConfig') }}',
+                async: true,
+                type: 'GET',
+                success: function (result) {
+                    location.reload()
+                },
+            });
+        }
+    }
+
+    /**
+     *
+     * @param forfaitsConfigIds
+     * @param prixForfaitConfigData
+     * @returns {Promise<unknown>}
+     */
+    function addAll(forfaitsConfigIds, prixForfaitConfigData){
+        data = {
+            ids: forfaitsConfigIds,
+            prixForfaitConfigData: prixForfaitConfigData,
+        }
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                data:
+                    {
+                        data : data
+                    },
+                url: '{{ path('app_service_form_addPrixForfaitConfigToAll') }}',
+                async: true,
+                type: 'GET',
+                success: function (result) {
+                    resolve(result)
+                    location.reload()
+                },
+            });
+        })
+    }
+</script>
+

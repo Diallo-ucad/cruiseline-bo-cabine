@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="form-group CategoryList">
+        <select class="form-control form-control-sm" id="cabinCategory" name="cabinCategory">
+            <option selected>Selectionner une categorie</option>
+            <option value='All'>Toutes categories</option>
+            {% for cabinCategorie in cabinCategories %}
+            <option value={{ cabinCategorie.id }}>{{ cabinCategorie.cabinCategoryTexte }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endblock %}

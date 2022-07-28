@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+{% block title %} Configurer des forfaits {% endblock %}
+{% block body %}
+    <h3 class="d-flex justify-content-center">CONFIGURATION DES FORFAITS</h3>
+    <hr>
+<form method="post" action="{{ path('app_forfait_config_new') }}">
+    <div class="d-flex justify-content-around searchFields">
+
+        <div class="form-group selectLangue">
+            <select class="form-control form-control-sm" id="langCategory" name="lang">
+                <option value="" selected>Selectionner une langue</option>
+                <option value='FR'>FR</option>
+                <option value='ES'>ES</option>
+                <option value='IT'>IT</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control form-control-sm" id="portId" name="portId" aria-describedby="Entrer le port" placeholder="Entrer le port">
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control form-control-sm" id="companyId" name="companyId" ria-describedby="Entrer la compagnie" placeholder="Entrer la compagnie" >
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control form-control-sm imputRefresh" id="bateauId" name="bateauId" ria-describedby="Entrer le bateau" placeholder="Entrer le bateau">
+        </div>
+
+
+        <div id="categorySelect"></div>
+
+        <div id="cabinTypeSelect"></div>
+
+    </div>
+    <hr>
+    <div class="content">
+        <div id="listForfaits">
+            {{ include('prix_forfait_config/index.html.twig') }}
+        </div>
+    </div>
+
+</form>
+
+<script>
+    function refreshCategorySelect(data){
+        return new Promise(function (resolve, reject){
+            $.ajax({
+                data:
+                    {
+                        data : data
+                    },
+                url: '{{ path('app_service_form_refreshCategoryFieldsData') }}',
+                async: true,
+                type: 'GET',
+                success: function (result) {
+                    resolve(result)
+
+                },
+            });
+        })
+
+    }
+
+    $(document).on('change','.imputRefresh',function () {
+        id = $(this).attr('id');
+        boatId = $("#"+id).val();
+        companyId = $('#companyId').val();
+        lang = $('#langCategory').val();
+        data = {
+            'boatId' : boatId,
+            'companyId': companyId,
+            'lang': lang
+        }
+
+        $.when(refreshCategorySelect(data)).done(function(result){
+            $('#categorySelect').html(result)
+        });
+
+    })
+
+    $(document).on('change', '#langCategory', function (){
+        bateauId = $('#bateauId').val()
+        if(!bateauId==''){
+            companyId = $('#companyId').val();
+            lang = $('#langCategory').val();
+            data = {
+                'boatId' : boatId,
+                'companyId': companyId,
+                'lang': lang
+            }
+            $.when(refreshCategorySelect(data)).done(function(result){
+                $('#categorySelect').html(result)
+            });
+        }
+    })
+
+    $(document).on('change','#cabinCategory',function () {
+        id = $(this).attr('id');
+        categoryId = $("#"+id).val();
+
+        $.ajax({
+            data:
+                {
+                    id : id,
+                    data : categoryId
+                },
+            url: '{{ path('app_service_form_refreshTypeFieldData') }}',
+            async: true,
+            type: 'GET',
+            success: function (result) {
+
+                $('#cabinTypeSelect').html(result)
+
+            },
+        });
+    })
+
+
+    $(document).on('change','#cabinTypes',function () {
+        id = $(this).attr('id');
+        cabinTypeId = $("#"+id).val();
+        portId = $("#portId").val();
+        companyId = $("#companyId").val();
+        bateauId = $("#bateauId").val();
+        categoryId= $("#cabinCategory").val();
+        data = {
+            'portId': portId,
+            'companyId': companyId,
+            'boatId': bateauId,
+            'cabinCategoryId': categoryId,
+            'cabinTypeId': cabinTypeId,
+        }
+
+        $.ajax({
+            data:
+                {
+                    id : id,
+                    data : data
+                },
+            url: '{{ path('app_service_form_ConfiguredForfaits') }}',
+            async: true,
+            type: 'GET',
+            success: function (result) {
+                $('#listForfaits').html(result)
+                $("#prixForfaitConfigModal").modal('show');
+
+            },
+        });
+    })
+</script>
+
+{% endblock %}
+
+

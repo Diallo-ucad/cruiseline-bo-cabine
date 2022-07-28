@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PrixForfaitConfig index{% endblock %}
+
+{% block body %}
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tarif par semaine</th>
+                <th>Tarif par jour</th>
+                <th>Devise</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for prix_forfait_config in prix_forfait_configs %}
+            <tr>
+                <td>{{ prix_forfait_config.tarifSemaine }}</td>
+                <td>{{ prix_forfait_config.tarifJour }}</td>
+                <td>{{ prix_forfait_config.currency }}</td>
+                <td>{{ prix_forfait_config.isActif ? 'Actif' : 'Non actif' }}</td>
+                <td>
+                    <a href="{{ path('app_prix_forfait_config_show', {'id': prix_forfait_config.id}) }}">Detail</a>
+                    <a href="{{ path('app_prix_forfait_config_edit', {'id': prix_forfait_config.id}) }}">Editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

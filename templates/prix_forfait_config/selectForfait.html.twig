@@ -1,0 +1,19 @@
+
+{% block body %}
+    <label class="requiered" for="prix_forfait_config_forfaits">Chosir un forfait</label>
+    <select class="form-control" id="prix_forfait_config_forfait" name="prix_forfait_config_forfait" required>
+        <option value="" selected>Selectionner un forfait</option>
+        {% for forfait in forfaits %}
+            <option value={{ forfait.id }}>{{ forfait.forfaitTitre }}</option>
+        {% endfor %}
+    </select>
+
+    <script>
+        $(document).on('click', '#prix_forfait_config_forfait', function (){
+            $('#btn-save-prix-Forfait-config').prop( "disabled", false );
+        })
+    </script>
+
+
+
+{% endblock %}

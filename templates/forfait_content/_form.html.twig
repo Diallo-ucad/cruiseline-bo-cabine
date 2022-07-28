@@ -1,0 +1,28 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div class="btn-save-content" id="btn-save-content">
+        <button class="btn btn-secondary" >{{ button_label|default('Save') }}</button>
+    </div>
+{{ form_end(form) }}
+
+<script>
+
+
+    wisi('#forfait_content_description')
+
+    function wisi(div) {
+        tinymce.init({
+            selector: div,
+            language: 'fr_FR',
+            menubar: false,
+            statusbar : false,
+            paste_data_images: true,
+            plugins: [
+                "textcolor link",
+                "paste",
+                "image",
+            ],
+            toolbar: 'undo redo | bold italic forecolor fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        });
+    }
+</script>

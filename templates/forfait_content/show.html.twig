@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ForfaitContent{% endblock %}
+
+{% block body %}
+    <h1>ForfaitContent</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ forfait_content.id }}</td>
+            </tr>
+            <tr>
+                <th>Langue</th>
+                <td>{{ forfait_content.langue }}</td>
+            </tr>
+            <tr>
+                <th>Adult_only</th>
+                <td>{{ forfait_content.adultOnly ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Position</th>
+                <td>{{ forfait_content.position }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ forfait_content.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <a href="{{ path('app_forfait_content_index') }}">back to list</a>
+
+    <a href="{{ path('app_forfait_content_edit', {'id': forfait_content.id}) }}">edit</a>
+
+    {{ include('forfait_content/_delete_form.html.twig') }}
+{% endblock %}

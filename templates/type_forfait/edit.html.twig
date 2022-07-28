@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Type Forfait{% endblock %}
+
+{% block body %}
+    <div class="container w-50">
+        <div class="row flex p-3 ">
+            <div class="col">
+                <h4>MODIFIER</h4>
+            </div>
+            <div class="col">
+                <a href="{{ path('app_type_forfait_index') }}">Retouner à la liste</a>
+            </div>
+
+        </div>
+            {{ include('type_forfait/_form.html.twig', {'button_label': 'Modifier'}) }}
+        </div>
+
+{% endblock %}

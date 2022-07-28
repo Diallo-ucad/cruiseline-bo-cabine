@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Type cabine{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="display-4">Type cabine</h1>
+
+
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="col">ID</th>
+                <td>{{ cabin_type.id }}</td>
+            </tr>
+            <tr>
+                <th scope="col">Position</th>
+                <td>{{ cabin_type.position }}</td>
+            </tr>
+            <tr>
+                <th  scope="col">Titre</th>
+                <td>{{ cabin_type.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+        <h3 class="display-4">Mises en avant type cabines</h3>
+        <ul class="cabinCodes">
+            {% for e in cabin_type.elements %}
+                <li>{{ e.position ~ ' - ' ~ (e.element)}}</li>
+            {% endfor %}
+        </ul>
+
+        <h3 class="display-4">Codes cabines</h3>
+        <ul class="cabinCodes">
+            {% for code in cabin_type.codes %}
+                <li>{{ (code.code) }}</li>
+            {% endfor %}
+        </ul>
+        {{ include('cabin_type/_delete_form.html.twig') }}
+    <a href="{{ path('app_cabin_type_index') }}">retourner à la liste</a>
+
+    <a href="{{ path('app_cabin_type_edit', {'id': cabin_type.id}) }}">édition</a>
+
+
+    </div>
+{% endblock %}

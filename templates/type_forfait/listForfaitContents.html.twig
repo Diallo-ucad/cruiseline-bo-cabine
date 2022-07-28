@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <!-- List content Modal -->
+    <div class="modal fade" id="forfaitContentModal" tabindex="-1" aria-labelledby="forfaitContentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="forfaitTitle" class="modal-title" id="forfaitContentModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="content_modal">
+                    <div class="modal-body" id="forfaitContents">
+
+                    </div>
+                </div>
+                <div class="btn-action-footer" id="btn-action-footer">
+                    <div class="modal-footer" id="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="button" onclick="lunchForfaitContentForm({forfaitId : '{{ forfait.getId }}'}) " id="btn-add-forfait-content" class="btn btn-primary">Ajouter du contenu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var selectedForfaitID = '0'
+        /**
+         *
+         * @param forfaitId
+         */
+        function lunchForfaitContentForm(data){
+            forfaitId = data.forfaitId
+            selectedForfaitID = forfaitId
+
+            $.ajax({
+                data:
+                    {
+                        data: forfaitId
+                    },
+                url: '{{ path('app_service_form_newForfaitContentForm') }}',
+                async: true,
+                type: 'GET',
+                success: function (result) {
+                    lunchForm(forfaitId);
+                },
+            });
+        }
+
+        /**
+         *
+         * @param forfait
+         */
+        function lunchForm(forfait) {
+            forfaitId = forfait.forfaitId
+            $.ajax({
+                data:
+                    {
+                        data: forfaitId
+                    },
+                url: '{{ path('app_service_form_newForfaitContentForm') }}',
+                async: true,
+                type: 'GET',
+                success: function (result) {
+                    $("#content_modal").html(result)
+                    $('#btn-save-content').remove()
+                    $('#btn-action-footer').html('<div class="modal-footer" id = "modal-footer"> ' +
+                        '<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button> ' +
+                        '<button type="button" class="btn btn-primary" id="btn-add-content">Valider</button> </div>')
+                },
+            });
+        }
+
+        $('#forfaitContentModal').on('hidden.bs.modal', function () {
+            location.reload()
+
+        })
+
+        $(document).on('click','#btn-add-content',function (){
+            lang = $('#forfait_content_langue').val()
+            isMajor = $('#forfait_content_adult_only').val()
+            position = $('#forfait_content_position').val()
+            //content = $('#forfait_content_description').val()
+            content = tinymce.get("forfait_content_description").getContent()
+            console.log(content)
+            data = {
+                forfaitId : selectedForfaitID,
+                lang : lang,
+                isMajor : isMajor,
+                position : position,
+                content : content,
+            }
+
+            $.ajax({
+                data:
+                    {
+                        data : data
+                    },
+                url: '{{ path('app_service_form_newForfaitContent') }}',
+                async: true,
+                type: 'GET',
+                success: function (result) {
+                    location.reload()
+                },
+            });
+        })
+    </script>
+{% endblock %}

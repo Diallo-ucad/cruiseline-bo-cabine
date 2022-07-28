@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Type Cabines{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <h1 class="display-4">Type Cabines</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Position</th>
+                <th scope="col">Nom</th>
+                <th scope="col">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cabin_type in cabin_types %}
+            <tr>
+                <th scope="row">{{ cabin_type.id }}</th>
+                <th>{{ cabin_type.position }}</th>
+                <td>{{ cabin_type.name }}</td>
+                <td>
+                    <a href="{{ path('app_cabin_type_show', {'id': cabin_type.id}) }}">voir</a>
+                    <a href="{{ path('app_cabin_type_edit', {'id': cabin_type.id}) }}">editer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        <a href="{{ path('app_cabin_type_new') }}">Nouveau</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ForfaitTypeTraductions{% endblock %}
+
+{% block body %}
+    <h1>ForfaitTypeTraductions</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ forfait_type_traduction.id }}</td>
+            </tr>
+            <tr>
+                <th>Lang</th>
+                <td>{{ forfait_type_traduction.lang }}</td>
+            </tr>
+            <tr>
+                <th>ForfaitTypeTitle</th>
+                <td>{{ forfait_type_traduction.forfaitTypeTitle }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_forfait_type_traductions_index') }}">back to list</a>
+
+    <a href="{{ path('app_forfait_type_traductions_edit', {'id': forfait_type_traduction.id}) }}">edit</a>
+
+    {{ include('forfait_type_traductions/_delete_form.html.twig') }}
+{% endblock %}

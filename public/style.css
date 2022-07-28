@@ -1,0 +1,87 @@
+.typesCabines {
+    border-style: outset;
+    background-color: black;
+    background-color: rgb(235, 250, 250);
+}
+
+.cabinType {
+    border-style: inherit;
+    border-width: 0.5px;
+    border-radius: 10px;
+}
+
+.cabinName {
+    border-bottom: inherit;
+    border-width: 0.2px;
+    align-self: center;
+    align-content: space-between;
+    padding: auto;
+    margin: auto;
+    color: rgb(29, 182, 131);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+#forfaitTitle a{
+    cursor: pointer;
+    text-decoration: none;
+    font-size: large;
+}
+.btn-typeTarif {
+    align-self: center;
+    margin: auto;
+}
+
+#flexCheckChecked{
+    background-color: darkgreen;
+}
+
+.typeTitle{
+    width: 100%;
+    margin: auto;
+    padding: 1%;
+    background-color: #5eb5e0;
+    color: #FFFFFF;
+
+}
+
+
+.btn-actions{
+    justify-content:flex-end;
+    margin: 2px;
+
+}
+
+.btn-actions a {
+    align-self: center;
+    margin: 1px;
+}
+
+.btnDelete{
+    margin: 1px;
+
+}
+.btn {
+    border-radius: 0;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+.modal-dialog{
+    overflow-y: initial;
+}
+
+.modal-body{
+    max-height: 80vh;
+    overflow-y: auto;
+}
